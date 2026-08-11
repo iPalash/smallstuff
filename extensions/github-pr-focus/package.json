@@ -1,6 +1,6 @@
 {
   "name": "github-pr-focus",
-  "version": "0.7.2",
+  "version": "0.7.1",
   "private": true,
   "scripts": {
     "package": "bash scripts/package-extension.sh",

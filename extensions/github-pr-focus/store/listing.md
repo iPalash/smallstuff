@@ -25,6 +25,7 @@ Key features:
 - Multi-select focus filters directly in the pull-request header
 - Separate additions and deletions for every category
 - Source-code comments counted independently from executable code
+- Generated Go mocks such as `mock_*.go` and `mocks/` grouped with Tests
 - JSON, JSONC, YAML, and YML grouped as Config
 - SQL files grouped as Migrations
 - Snapshots, fixtures, golden files, cassettes, recordings, and testdata grouped
