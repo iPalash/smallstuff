@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "GitHub PR Focus",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Focus GitHub pull request diffs with category filters and split line counts.",
   "icons": {
     "16": "assets/icons/icon16.png",

@@ -35,8 +35,12 @@
     "testdata",
   ]);
 
+  const GO_MOCK_DIRECTORIES = new Set(["gomock", "mock", "mockgen", "mocks"]);
+  const GO_MOCK_DIRECTORY_PATTERN = /^(?:mock_[^/]+|[^/]+_mocks?)$/i;
+
   const TEST_CONFIG_PATTERN = /^(?:conftest\.py|pytest\.ini|(?:jest|vitest|playwright|cypress)\.config\.[^.]+)$/i;
   const TEST_FILE_PATTERN = /(?:^test_[^/]+\.(?:py|rb)$|[^/]+_test\.(?:go|py|rb|rs)$|[^/]+\.(?:test|tests|spec)\.[^/]+$|[^/]+\.(?:snap|golden)$)/i;
+  const GO_MOCK_FILE_PATTERN = /^(?:mock_[^/]+|[^/]+_mock|mocks?)\.go$/i;
   const DOCUMENTATION_DIRECTORIES = new Set(["doc", "docs", "documentation"]);
   const TEST_ARTIFACT_FILE_PATTERN = /[^/]+\.(?:golden|snap)$/i;
 
@@ -74,7 +78,21 @@
       }) ||
       TEST_CONFIG_PATTERN.test(fileName) ||
       TEST_FILE_PATTERN.test(fileName) ||
+      isGoMock(fileName, directories) ||
       isTestArtifact(normalized)
+    );
+  }
+
+  function isGoMock(fileName, directories) {
+    if (!fileName.endsWith(".go")) return false;
+
+    return (
+      GO_MOCK_FILE_PATTERN.test(fileName) ||
+      directories.some(
+        (directory) =>
+          GO_MOCK_DIRECTORIES.has(directory) ||
+          GO_MOCK_DIRECTORY_PATTERN.test(directory),
+      )
     );
   }
 

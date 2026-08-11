@@ -18,6 +18,10 @@ test("recognizes common test files and directories", () => {
     "e2e/login-flow.ts",
     "playwright.config.ts",
     "snapshots/card.snap",
+    "internal/mocks/store.go",
+    "internal/gateway/mock_client.go",
+    "internal/gateway/client_mock.go",
+    "pkg/store/mocks.go",
   ];
 
   for (const filePath of testFiles) {
@@ -34,6 +38,10 @@ test("does not hide production files with test-like words", () => {
     "docs/specs/architecture.md",
     "app/testimonials/page.tsx",
     "internal/specification/parser.go",
+    "internal/mockingbird/service.go",
+    "pkg/mockable/iface.go",
+    "src/mocking.go",
+    "src/mockClient.ts",
   ];
 
   for (const filePath of sourceFiles) {
@@ -74,4 +82,26 @@ test("splits config, migrations, and test artifacts from source code", () => {
   }
   assert.equal(isTestArtifact("tests/fixtures/user.json"), true);
   assert.equal(isTestFile("tests/fixtures/user.json"), true);
+});
+
+test("counts generated Go mocks as tests", () => {
+  const categories = new Map([
+    ["internal/mocks/store.go", "tests"],
+    ["mocks/billing/InvoiceService.go", "tests"],
+    ["internal/mock/db.go", "tests"],
+    ["internal/mock_store/store.go", "tests"],
+    ["internal/store_mocks/store.go", "tests"],
+    ["internal/gateway/mock_client.go", "tests"],
+    ["internal/gateway/mock_client_v2.go", "tests"],
+    ["internal/gateway/client_mock.go", "tests"],
+    ["pkg/store/mocks.go", "tests"],
+    ["testdata/mocks/store.go", "artifacts"],
+    ["mocks/responses.json", "config"],
+    ["internal/mockingbird/service.go", "source"],
+  ]);
+
+  for (const [filePath, category] of categories) {
+    assert.equal(getFileCategory(filePath), category, filePath);
+  }
+  assert.equal(isTestArtifact("internal/mocks/store.go"), false);
 });

@@ -42,6 +42,13 @@ The extension recognizes common conventions including `tests/`, `test/`,
 snapshots, golden files, recordings, and cassettes are classified separately as
 Artifacts.
 
+Generated Go mocks also count as Tests. That covers the file names `mock_*.go`,
+`*_mock.go`, `mock.go`, and `mocks.go`, plus any `.go` file inside a `mock/`,
+`mocks/`, `mockgen/`, `gomock/`, `mock_<package>/`, or `<package>_mocks/`
+directory — the layouts `mockgen` and `mockery` produce. The rule only applies
+to `.go` files, so a `mocks/responses.json` keeps its own category, and mocks
+committed under `testdata/` stay Artifacts.
+
 ## Development
 
 The extension has no runtime dependencies or build step. To run its tests:
