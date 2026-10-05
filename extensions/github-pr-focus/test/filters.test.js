@@ -3,6 +3,7 @@ const assert = require("node:assert/strict");
 
 const {
   getFileCategory,
+  isMockFile,
   isTestArtifact,
   isTestFile,
   normalizeFilePath,
@@ -74,4 +75,25 @@ test("splits config, migrations, and test artifacts from source code", () => {
   }
   assert.equal(isTestArtifact("tests/fixtures/user.json"), true);
   assert.equal(isTestFile("tests/fixtures/user.json"), true);
+});
+
+test("splits generated and hand-written mocks from source and tests", () => {
+  const categories = new Map([
+    ["core/jobfork/mocks/mock_jobfork.go", "mocks"],
+    ["internal/httpapi/mocks/mock_clerk.go", "mocks"],
+    ["src/__mocks__/axios.ts", "mocks"],
+    ["tests/mocks/client.py", "mocks"],
+    ["pkg/store/store_mock.go", "mocks"],
+    ["src/api.mock.ts", "mocks"],
+    ["app/mock_server.py", "mocks"],
+    ["tests/fixtures/mocks/user.json", "artifacts"],
+    ["src/hammock.ts", "source"],
+    ["src/mockingbird.go", "source"],
+    ["src/api.mock.test.ts", "tests"],
+  ]);
+
+  for (const [filePath, category] of categories) {
+    assert.equal(getFileCategory(filePath), category, filePath);
+  }
+  assert.equal(isMockFile("internal/specification/parser.go"), false);
 });

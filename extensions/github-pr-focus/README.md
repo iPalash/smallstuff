@@ -6,8 +6,9 @@ continue to work as GitHub loads more files or navigates without a full page
 refresh.
 
 The pull-request header replaces GitHub's combined line total with a breakdown
-for **Code**, **Comments**, **Tests**, **Config**, **Migrations**, and test
-**Artifacts**. JSON, JSONC, YAML, and YML files count as Config; SQL counts as
+for **Code**, **Comments**, **Tests**, **Mocks**, **Config**, **Migrations**,
+and test **Artifacts**. Files under `mocks/`, `mock/`, or `__mocks__/`, and
+files named like `mock_*.go`, `*_mock.go`, or `*.mock.ts`, count as Mocks. JSON, JSONC, YAML, and YML files count as Config; SQL counts as
 Migrations. Snapshots, golden files, fixtures, recordings, cassettes, and
 `testdata` paths count as Artifacts. A category excluded by the active filters
 is muted and struck through. An **Other** category appears only if GitHub has not

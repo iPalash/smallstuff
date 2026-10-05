@@ -12,6 +12,7 @@
     "code",
     "comments",
     "tests",
+    "mocks",
     "config",
     "migrations",
     "artifacts",
@@ -298,6 +299,7 @@
       comments: { additions: 0, deletions: 0 },
       config: { additions: 0, deletions: 0 },
       migrations: { additions: 0, deletions: 0 },
+      mocks: { additions: 0, deletions: 0 },
       other: { additions: 0, deletions: 0 },
       tests: { additions: 0, deletions: 0 },
     };
@@ -339,6 +341,7 @@
         breakdown.config.additions +
         breakdown.migrations.additions +
         breakdown.artifacts.additions +
+        breakdown.mocks.additions +
         breakdown.tests.additions;
       const knownDeletions =
         breakdown.code.deletions +
@@ -346,6 +349,7 @@
         breakdown.config.deletions +
         breakdown.migrations.deletions +
         breakdown.artifacts.deletions +
+        breakdown.mocks.deletions +
         breakdown.tests.deletions;
       breakdown.other.additions = Math.max(
         0,
@@ -406,6 +410,7 @@
       createLineStat("code", "Code"),
       createLineStat("comments", "Comments"),
       createLineStat("tests", "Tests"),
+      createLineStat("mocks", "Mocks"),
       createLineStat("config", "Config"),
       createLineStat("migrations", "Migrations"),
       createLineStat("artifacts", "Artifacts"),
@@ -466,6 +471,12 @@
         breakdown.tests,
         !isLineCategoryVisible("tests", view),
         view.focusCategories.has("tests"),
+      );
+      updateLineStat(
+        element.querySelector("[data-ghprf-category='mocks']"),
+        breakdown.mocks,
+        !isLineCategoryVisible("mocks", view),
+        view.focusCategories.has("mocks"),
       );
       updateLineStat(
         element.querySelector("[data-ghprf-category='config']"),

@@ -275,8 +275,11 @@ test("supports the current changes route and progressive diff containers", () =>
   const artifactStat = lineBreakdown.querySelector(
     "[data-ghprf-category='artifacts']",
   );
+  const mockStat = lineBreakdown.querySelector("[data-ghprf-category='mocks']");
   const otherStat = lineBreakdown.querySelector("[data-ghprf-category='other']");
   assert.equal(codeStat.tagName, "BUTTON");
+  assert.equal(mockStat.tagName, "BUTTON");
+  assert.equal(mockStat.hidden, true);
   assert.equal(commentStat.tagName, "BUTTON");
   assert.equal(testStat.tagName, "BUTTON");
   assert.equal(configStat.tagName, "BUTTON");

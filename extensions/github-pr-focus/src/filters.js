@@ -39,6 +39,8 @@
   const TEST_FILE_PATTERN = /(?:^test_[^/]+\.(?:py|rb)$|[^/]+_test\.(?:go|py|rb|rs)$|[^/]+\.(?:test|tests|spec)\.[^/]+$|[^/]+\.(?:snap|golden)$)/i;
   const DOCUMENTATION_DIRECTORIES = new Set(["doc", "docs", "documentation"]);
   const TEST_ARTIFACT_FILE_PATTERN = /[^/]+\.(?:golden|snap)$/i;
+  const MOCK_DIRECTORIES = new Set(["__mocks__", "mock", "mocks"]);
+  const MOCK_FILE_PATTERN = /(?:^mocks?_[^/]+\.[^.]+$|[^/]+[_.]mocks?\.[^.]+$)/i;
 
   function normalizeFilePath(filePath) {
     if (typeof filePath !== "string") return "";
@@ -92,14 +94,32 @@
     );
   }
 
+  function isMockFile(filePath) {
+    const normalized = normalizeFilePath(filePath).toLowerCase();
+    if (!normalized) return false;
+
+    const segments = normalized.split("/");
+    return (
+      segments.slice(0, -1).some((directory) => MOCK_DIRECTORIES.has(directory)) ||
+      MOCK_FILE_PATTERN.test(segments.at(-1))
+    );
+  }
+
   function getFileCategory(filePath) {
     const normalized = normalizeFilePath(filePath).toLowerCase();
     if (isTestArtifact(normalized)) return "artifacts";
+    if (isMockFile(normalized)) return "mocks";
     if (isTestFile(normalized)) return "tests";
     if (/\.(?:jsonc?|ya?ml)$/.test(normalized)) return "config";
     if (/\.sql$/.test(normalized)) return "migrations";
     return "source";
   }
 
-  return { getFileCategory, isTestArtifact, isTestFile, normalizeFilePath };
+  return {
+    getFileCategory,
+    isMockFile,
+    isTestArtifact,
+    isTestFile,
+    normalizeFilePath,
+  };
 });
